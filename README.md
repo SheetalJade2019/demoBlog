@@ -14,28 +14,24 @@
 
    ### Home
    
-   <img src="" align="center" width="700" height="400">
+   <img src="https://github.com/SheetalJade2019/demoBlog/blob/master/Screenshots/home.png" align="center" width="700" height="400">
    
-   ### Register
+   ### SignUp
    
-   <img src="" align="center" width="700" height="400">
+   <img src="https://github.com/SheetalJade2019/demoBlog/blob/master/Screenshots/Signup.png" align="center" width="700" height="400">
 
    ### Login
    
-   <img src="" align="center" width="700" height="400">
+   <img src="https://github.com/SheetalJade2019/demoBlog/blob/master/Screenshots/login.png" align="center" width="700" height="400">
         
-   *    Once user logged in, he will be redirected to dashboard. Dashboard page is shown below
+   *    Once user logged in, he will be redirected to dashboard. Dashboard page is shown below. 
         
    ### Dashboard
                   
-   <img src="" align="center" width="700" height="400">
+   <img src="https://github.com/SheetalJade2019/demoBlog/blob/master/Screenshots/dashboard.png" align="center" width="700" height="400">
         
-   *    User can edit post, as shown in following page 
-        
-   ### Edit Post
-   
-   <img src="" align="center" width="700" height="400">
-        
+   *    Dashboard page have option to edit and delete post
+             
    *    Only Author have access to delete post. 
 
 # Prerequisites
@@ -68,7 +64,7 @@ Before executing this project, you must have
     
        *  if you see following text then your web applications is started
  
-          <img src="" align="center" width="600" height="300">
+          <img src="https://github.com/SheetalJade2019/demoBlog/blob/master/Screenshots/runblog.png" align="center" width="600" height="300">
 
 # Built With
 
