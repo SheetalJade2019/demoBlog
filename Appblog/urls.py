@@ -14,7 +14,10 @@ urlpatterns = [
     path('login/',views.user_login,name="login"),
     path('logout/',views.user_logout,name="logout"),
     path('addpost/',views.add_post, name="addpost"),
-    path('updatepost/<int:id>',views.update_post, name="updatepost"),
+    path('update_user/<int:id>',views.update_user, name="updateuser"),
     path('deletepost/<int:id>',views.delete_post, name="deletepost"),
     path('cancelpost/',views.cancel_post, name="cancelpost"),
+    path('change_password/<int:id>',views.change_password,name="changepassword"),
+    path('users_list/',views.users_list,name="userslist"),
+
 ]

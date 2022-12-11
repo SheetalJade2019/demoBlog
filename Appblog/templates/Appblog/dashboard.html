@@ -4,7 +4,9 @@
 {% block side %}
 <div class="col-sm-2 text-white my-5 text-center">
   <h4 class="my-5">Profile</h4>
-  <h5>{{full_name}}</h5>
+  <a href="{% url 'updateuser' user.User_ID %}" class="btn btn-warning btn-sm">Edit Profile</a>
+  <a href="{% url 'changepassword' user.User_ID %}" class="btn btn-warning btn-sm">Change Password</a>
+  <a href="{% url 'userslist' %}" class="btn btn-warning btn-sm">View All Users</a>
   {% for group in groups %}
     <p>{{group.name}}</p>
   {% endfor %}
@@ -15,31 +17,43 @@
 
     <div class="text-black col-sm-10 my-5">
         <h3 >Dashboard Page</h3>
+        <p>{{users}}</p>
+        <p>{{profile}}</p>
         {% if messages %}
         {% for message in messages %}
         <p>{{message}}</p>
         {% endfor %}
         {% endif %}
         <a href="{% url 'addpost' %}" class="btn btn-success my-3">Add Post</a>
-        {% if posts %}
-        {% for post in posts %}
+        {% if users %}
+        {% for user in users %}
         <table class="table table-hover bg-white">
           <thead>
             <tr class="text-center">
-              <th scope="col" style="width:2%">ID</th>
-              <th scope="col" style="width:28%">Title</th>
-              <th scope="col" style="width:55%">Description</th>
-              <th scope="col" style="width:15%">Action</th>
+              <th scope="col" style="width:2%">User ID</th>
+              <th scope="col" style="width:28%">First Name</th>
+              <th scope="col" style="width:28%">last Name</th>
+              <th scope="col" style="width:55%">Phone</th>
+              <th scope="col" style="width:55%">Email</th>
+              <th scope="col" style="width:15%">DOB</th>
+              <th scope="col" style="width:15%">Gender</th>
+              <th scope="col" style="width:15%">Type</th>
+              <!-- <th scope="col" style="width:15%">Gender</th> -->
             </tr>
           </thead>
           <tr>
-            <td>{{post.id}}</td>
-            <td>{{post.title}}</td>
-            <td>{{post.desc}}</td>
+            <td>{{user.User_ID}}</td>
+            <td>{{user.first_name}}</td>
+            <td>{{user.last_name}}</td>
+            <td>{{user.phone}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.Dob}}</td>
+            <td>{{user.gender}}</td>
+            <td>{{user.Type}}</td>
             <td class="text-center">
-              <a href="{% url 'updatepost' post.id %}" class="btn btn-warning btn-sm">Edit</a>
+              <a href="{% url 'updateuser' user.User_ID %}" class="btn btn-warning btn-sm">Edit</a>
               {% if perms.Appblog.delete_post %}
-              <form class="d-inline" action="{% url 'deletepost' post.id %}" method="post">
+              <form class="d-inline" action="{% url 'deletepost' user.User_ID %}" method="post">
                   {% csrf_token %}
                   <input type="submit" class="btn btn-danger btn-sm" value="Delete">
               </form>

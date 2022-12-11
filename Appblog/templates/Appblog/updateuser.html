@@ -4,12 +4,12 @@
 {% block content %}
 <div class="col-sm-10">
   <h3 class="text-white my-5">Dashboard/update post</h3>
-  {% if post %}
+  {% if user %}
   <form class="" action="" method="post">
       {% csrf_token %}
       {{form.as_p}}
       <input type="submit" class="btn btn-success" value="Update">
-      <button type="reset" class="btn btn-warning"><a href="{% url 'updatepost' post.id %}">Cancel</a></button>
+      
   </form>
   {% endif %}
 </div>

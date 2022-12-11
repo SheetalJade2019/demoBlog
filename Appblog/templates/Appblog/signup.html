@@ -17,7 +17,6 @@
               {{fm.label_tag}}<br> {{fm}} {{fm.errors|striptags}}
             </div>
             {% endfor %}
-
             <button class="btn btn-primary"type="submit" name="submit">Submit</button>
             {% if form.non_field_errors %}
               {% for error in form.non_field_errors %}

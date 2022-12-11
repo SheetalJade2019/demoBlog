@@ -4,7 +4,9 @@
 {% block content %}
 
     <div class="text-black col-sm-10 my-5">
-        <h3 >Home Page</h3>
+        <h3 ></h3>
+        <a href="{% url 'login' %}" class="btn btn-primary btn-sm">Login</a>
+        <a href="{% url 'signup' %}" class="btn btn-primary btn-sm">Register</a>
         {% for post in posts %}
         <div class="jumbotron jumbotron-fluid">
             <div class="container">

@@ -1,9 +1,9 @@
 from django.shortcuts import render,HttpResponseRedirect
 #from django.contrib.auth.forms import UserCreationForm
-from .forms import SignUpForm, LoginForm, PostForm
+from .forms import SignUpForm, LoginForm, PostForm, UserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Post
+from .models import Post, User
 from django.contrib.auth.models import Group
 # Create your views here.
 
@@ -27,11 +27,23 @@ def contact(request):
 # Dashboard
 def dashboard(request):
     if request.user.is_authenticated:
-        posts=Post.objects.all()
+        # posts=Post.objects.all()
+        users = User.objects.all()
         user = request.user
+        profile = {
+            "user_id":user.User_ID,
+            "fist_name":user.first_name,
+            'last_name':user.last_name,
+            'email':user.email, 
+            'phone':user.phone,
+            'Dob':user.Dob,
+            'gender':user.gender,
+            'Type':user.Type
+            }
         full_name = user.get_full_name()
-        gps = user.groups.all()
-        return render(request, 'Appblog/dashboard.html',{'posts':posts,'full_name':full_name,'groups':gps})
+        # gps = user.groups.all()
+        return render(request, 'Appblog/dashboard.html',{'profile':profile,'full_name':full_name,'groups':"gps",'users':users})
+        # return render(request, 'Appblog/dashboard.html',{'posts':posts,'full_name':full_name,'groups':gps,'users':users})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -46,13 +58,14 @@ def user_signup(request):
         if form.is_valid():
             messages.success(request,'Congrats!! You have become author')
             user=form.save()
-            group = Group.objects.get(name = "Author")
-            user.groups.add(group)
+            # group = Group.objects.get(name = "Author")
+            # user.groups.add(group)
     else:#if request is GET or other
         form = SignUpForm()
     return render(request, 'Appblog/signup.html',{'form':form})
 
 def user_login(request):
+    print("REQUEST DATA : ",request.POST)
     if not request.user.is_authenticated:
         if request.method == "POST":
             form = LoginForm(request=request,data=request.POST)
@@ -93,20 +106,21 @@ def cancel_post(request):
 
 
 # update posts
-def update_post(request, id):
+def update_user(request, id):
     if request.user.is_authenticated:
-
+        print("__________________________________________",type(id))
         if request.method == "POST":
-            pi = Post.objects.get(pk=id)
-            form = PostForm(request.POST, instance=pi)
+            pi = User.objects.get(User_ID=id)
+            form = UserForm(request.POST, instance=pi)
             if form.is_valid():
                 form.save()
         else:
-            pi = Post.objects.get(pk=id)
-            form = PostForm(instance=pi)
+            pi = User.objects.get(User_ID=id)
+            form = UserForm(instance=pi)
         #return HttpResponseRedirect('/dashboard/')
-        pst=Post.objects.all()
-        return render(request, 'Appblog/updatepost.html',{'form':form,'post':pst})
+        user=User.objects.all()
+        print({'form':form,'user':user})
+        return render(request, 'Appblog/updateuser.html',{'form':form,'user':user})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -120,3 +134,29 @@ def delete_post(request, id):
             return HttpResponseRedirect('/dashboard/')
     else:
         return HttpResponseRedirect('/login/')
+
+def change_password(request,id):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            email = request.POST['email']
+            old_pass = request.POST['old_password']
+            new_pass = request.POST['new_password']
+            user=authenticate(username=email, password=old_pass)
+            if user is not None:
+                obj = User.objects.get(email=email,User_ID=id)
+                obj.set_password(new_pass)
+                obj.save()
+                messages.success(request,'Password Updated Successfully!')
+                return HttpResponseRedirect('/dashboard/')
+            else:
+                messages.error(request,'Username & old password did not match')
+                return HttpResponseRedirect('/dashboard/')
+    messages.error(request,'Please login')
+    return HttpResponseRedirect('/login/')
+
+
+
+def users_list(request):
+    if request.user.is_authenticated:
+        if request.method == "GET":
+            users=User.objects.all()
