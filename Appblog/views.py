@@ -44,7 +44,7 @@ def dashboard(request):
             }
         full_name = user.get_full_name()
         # gps = user.groups.all()
-        return render(request, 'Appblog/dashboard.html',{'profile':profile,'full_name':full_name,'groups':"gps",'users':users})
+        return render(request, 'Appblog/dashboard.html',{'profile':profile,'full_name':full_name,'groups':"gps",'users':users, "user":user})
         # return render(request, 'Appblog/dashboard.html',{'posts':posts,'full_name':full_name,'groups':gps,'users':users})
     else:
         return HttpResponseRedirect('/login/')
@@ -112,18 +112,21 @@ def cancel_post(request):
 def update_user(request, id):
     if request.user.is_authenticated:
         print("__________________________________________",type(id))
+        user = User.objects.get(User_ID=int(id))
         if request.method == "POST":
-            pi = User.objects.get(User_ID=id)
+            pi = User.objects.get(User_ID=int(id))
+            print(pi.User_ID)
             form = UserForm(request.POST, instance=pi)
             if form.is_valid():
                 form.save()
         else:
             pi = User.objects.get(User_ID=id)
+            print(pi.User_ID)
             form = UserForm(instance=pi)
         #return HttpResponseRedirect('/dashboard/')
-        user=User.objects.all()
-        print({'form':form,'user':user})
-        return render(request, 'Appblog/updateuser.html',{'form':form,'user':user, "requestType":"updateUser"})
+        # user=User.objects.all()
+        # print({'form':form,'user':user})
+        return render(request, 'Appblog/dashboard.html',{'form':form,'user':user, "updateUser":True})
     else:
         return HttpResponseRedirect('/login/')
 

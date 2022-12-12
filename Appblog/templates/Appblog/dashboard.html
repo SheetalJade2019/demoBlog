@@ -1,68 +1,19 @@
 {% extends 'Appblog/base.html' %}
 {% load static %}
 
-{% block side %}
-<div class="col-sm-2 text-white my-5 text-center">
-  <h4 class="my-5">Profile</h4>
-  <a href="{% url 'updateuser' user.User_ID %}" class="btn btn-warning btn-sm">Edit Profile</a>
-  <a href="{% url 'changepassword' user.User_ID %}" class="btn btn-warning btn-sm">Change Password</a>
-  <a href="{% url 'userslist' page_no=1 %}" class="btn btn-warning btn-sm">View All Users</a>
-  {% for group in groups %}
-    <p>{{group.name}}</p>
-  {% endfor %}
-</div>
-{% endblock side %}
 
 {% block content %}
 
     <div class="text-black col-sm-10 my-5">
         <h3 >Dashboard Page</h3>
-        <p>{{users}}</p>
-        <p>{{profile}}</p>
-        {% if messages %}
-        {% for message in messages %}
-        <p>{{message}}</p>
-        {% endfor %}
-        {% endif %}
+        <div>
+        <a href="{% url 'updateuser' user.User_ID %}" class="btn btn-warning btn-sm">Edit Profile</a><br>
+        <a href="{% url 'changepassword' user.User_ID %}" class="btn btn-warning btn-sm">Change Password</a><br>
+        <a href="{% url 'userslist' page_no=1 %}" class="btn btn-warning btn-sm">View All Users</a>
+        </div>
+        
         <!-- <a href="{% url 'addpost' %}" class="btn btn-success my-3">Add Post</a> -->
-        {% if users %}
-        {% for user in users %}
-        <table class="table table-hover bg-white">
-          <thead>
-            <tr class="text-center">
-              <th scope="col" style="width:2%">User ID</th>
-              <th scope="col" style="width:28%">First Name</th>
-              <th scope="col" style="width:28%">last Name</th>
-              <th scope="col" style="width:55%">Phone</th>
-              <th scope="col" style="width:55%">Email</th>
-              <th scope="col" style="width:15%">DOB</th>
-              <th scope="col" style="width:15%">Gender</th>
-              <th scope="col" style="width:15%">Type</th>
-              <!-- <th scope="col" style="width:15%">Gender</th> -->
-            </tr>
-          </thead>
-          <tr>
-            <td>{{user.User_ID}}</td>
-            <td>{{user.first_name}}</td>
-            <td>{{user.last_name}}</td>
-            <td>{{user.phone}}</td>
-            <td>{{user.email}}</td>
-            <td>{{user.Dob}}</td>
-            <td>{{user.gender}}</td>
-            <td>{{user.Type}}</td>
-            <td class="text-center">
-              <a href="{% url 'updateuser' user.User_ID %}" class="btn btn-warning btn-sm">Edit</a>
-              {% if perms.Appblog.delete_post %}
-              <form class="d-inline" action="{% url 'deletepost' user.User_ID %}" method="post">
-                  {% csrf_token %}
-                  <input type="submit" class="btn btn-danger btn-sm" value="Delete">
-              </form>
-              {% endif %}
-            </td>
-          </tr>
-        </table>
-        {% endfor %}
-        {% endif %}
+        
     </div>
 
 
@@ -87,7 +38,7 @@
     {% endif %}  
     
     {% if userList %}
-
+      <div class="text-black col-sm-10 my-5">
         {% for user in users %}
         <table class="table table-hover bg-white">
           <thead>
@@ -115,8 +66,21 @@
           </tr>
         </table>
         {% endfor %}
-
+      </div>
     {% endif %} 
-  </div>
+
+    {% if updateUser %}
+        <div class="text-black col-sm-10 my-5">
+          <h3 class="text-white my-5">Dashboard/update post</h3>
+          {% if user %}
+          <form class="" action="" method="post">
+              {% csrf_token %}
+              {{form.as_p}}
+              <input type="submit" class="btn btn-success" value="Update">
+              
+          </form>
+          {% endif %}
+        </div>
+    {% endif %}
 
 {% endblock content %}
