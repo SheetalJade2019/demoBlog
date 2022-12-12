@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Post, User
 from django.contrib.auth.models import Group
+from django.core.paginator import Paginator
+import math
 # Create your views here.
 
 def base(request):
@@ -58,6 +60,7 @@ def user_signup(request):
         if form.is_valid():
             messages.success(request,'Congrats!! You have become author')
             user=form.save()
+            return HttpResponseRedirect('/login/')
             # group = Group.objects.get(name = "Author")
             # user.groups.add(group)
     else:#if request is GET or other
@@ -153,20 +156,32 @@ def change_password(request,id):
                 obj.save()
                 messages.success(request,'Password Updated Successfully!')
                 # return HttpResponseRedirect('/dashboard/')
-                # return render(request, 'Appblog/dashboard.html',{"requestType":"changePassword"})
+                return render(request, 'Appblog/dashboard.html',{"changePassword":True})
 
             else:
                 form = ChangePasswordForm()
                 messages.error(request,'Username & old password did not match')
                 # return HttpResponseRedirect('/dashboard/')
-            return render(request, 'Appblog/dashboard.html',{"requestType":"changePassword","form":form})
-        return render(request, 'Appblog/changepassword.html',{"requestType":"changePassword","form":form})
+            return render(request, 'Appblog/dashboard.html',{"changePassword":True,"form":form})
+        return render(request, 'Appblog/dashboard.html',{"changePassword":True,"form":form})
         
     messages.error(request,'Please login')
     return HttpResponseRedirect('/login/')
 
 
-def users_list(request):
+def users_list(request,page_no):
+    max_rows = 5
     if request.user.is_authenticated:
         if request.method == "GET":
             users=User.objects.all()
+            clause_list=users
+            max_count = math.ceil(len(clause_list)/max_rows)
+                # if int(page_no) > max_count:
+                #     return Response({"message":"messages['build_list_pageNo_incorrect']"},status=status.HTTP_400_BAD_REQUEST)
+            paginator = Paginator(clause_list, max_rows)
+            # pages_no = request.GET.get('page')
+            pages_no = page_no
+            page = paginator.page(pages_no)
+
+            context = {"users":page.object_list,"max_page_count":max_count,"max_record_count":len(clause_list),"userList":True}
+            return render(request, 'Appblog/dashboard.html',context)

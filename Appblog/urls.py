@@ -18,6 +18,6 @@ urlpatterns = [
     path('deletepost/<int:id>',views.delete_post, name="deletepost"),
     path('cancelpost/',views.cancel_post, name="cancelpost"),
     path('change_password/<int:id>',views.change_password,name="changepassword"),
-    path('users_list/',views.users_list,name="userslist"),
+    path('users_list/<int:page_no>',views.users_list,name="userslist"),
 
 ]

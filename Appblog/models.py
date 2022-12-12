@@ -10,9 +10,10 @@ user_gender_choices = [('Male','Male'),('Female','Female'),('Other','Other')]
 user_type_choices = [('Primary','Primary'),('Secondary','Secondary')]
 
 class User(AbstractUser):
+    username = models.CharField(max_length=200, default="")
     email = models.EmailField(max_length=250,unique=True)
-    first_name = models.CharField(max_length=80, default=0)
-    last_name = models.CharField(max_length=80, default=0)
+    first_name = models.CharField(max_length=80, default="")
+    last_name = models.CharField(max_length=80, default="")
     User_ID = models.AutoField(primary_key=True)
     address = models.CharField(max_length=250, blank=True,null=True)
     session_token = models.CharField(max_length=20, default=0)
