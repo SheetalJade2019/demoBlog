@@ -65,4 +65,26 @@
         {% endif %}
     </div>
 
+
+    {% if requestType is changePassword %}
+      <div class="text-black col-sm-10 my-5">
+        <h3 >Login Page</h3>
+        <form  method="post" novalidate>
+            {% csrf_token %}
+            {% for fm in form %}
+            <div class="form-group">
+              {{fm.label_tag}} {{fm}} {{fm.errors|striptags}}
+            </div>
+            {% endfor %}
+
+            <button class="btn btn-primary"type="submit" name="submit">Submit</button>
+            {% if form.non_field_errors %}
+              {% for error in form.non_field_errors %}
+                <p class="alert alert-danger my-3">{{error}}</p>
+              {% endfor %}
+            {% endif %}
+        </form>
+    {% endif %}    
+  </div>
+
 {% endblock content %}

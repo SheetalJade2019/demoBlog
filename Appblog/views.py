@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponseRedirect
 #from django.contrib.auth.forms import UserCreationForm
-from .forms import SignUpForm, LoginForm, PostForm, UserForm
+from .forms import SignUpForm, LoginForm, PostForm, UserForm, ChangePasswordForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Post, User
@@ -120,7 +120,7 @@ def update_user(request, id):
         #return HttpResponseRedirect('/dashboard/')
         user=User.objects.all()
         print({'form':form,'user':user})
-        return render(request, 'Appblog/updateuser.html',{'form':form,'user':user})
+        return render(request, 'Appblog/updateuser.html',{'form':form,'user':user, "requestType":"updateUser"})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -136,24 +136,34 @@ def delete_post(request, id):
         return HttpResponseRedirect('/login/')
 
 def change_password(request,id):
+    print("REQUEST DATA : ",request.POST)
+
     if request.user.is_authenticated:
+        form = ChangePasswordForm()
         if request.method == "POST":
+            # form = LoginForm(request=request,data=request.POST)
             email = request.POST['email']
             old_pass = request.POST['old_password']
             new_pass = request.POST['new_password']
+            obj = User.objects.get(User_ID=int(id))
             user=authenticate(username=email, password=old_pass)
             if user is not None:
-                obj = User.objects.get(email=email,User_ID=id)
+                # obj = User.objects.get(email=email,User_ID=id)
                 obj.set_password(new_pass)
                 obj.save()
                 messages.success(request,'Password Updated Successfully!')
-                return HttpResponseRedirect('/dashboard/')
+                # return HttpResponseRedirect('/dashboard/')
+                # return render(request, 'Appblog/dashboard.html',{"requestType":"changePassword"})
+
             else:
+                form = ChangePasswordForm()
                 messages.error(request,'Username & old password did not match')
-                return HttpResponseRedirect('/dashboard/')
+                # return HttpResponseRedirect('/dashboard/')
+            return render(request, 'Appblog/dashboard.html',{"requestType":"changePassword","form":form})
+        return render(request, 'Appblog/changepassword.html',{"requestType":"changePassword","form":form})
+        
     messages.error(request,'Please login')
     return HttpResponseRedirect('/login/')
-
 
 
 def users_list(request):

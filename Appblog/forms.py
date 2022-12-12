@@ -49,3 +49,9 @@ class UserForm(ModelForm):
     class Meta:
         model = User
         fields = ['first_name','last_name','email', 'phone','Dob','gender','Type']
+
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(label="Old Password", widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    new_password = forms.CharField(label="New Password", widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    email = forms.CharField(label="Email",widget=forms.EmailInput(attrs={'class':'form-control'})
+    )
