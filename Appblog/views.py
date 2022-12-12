@@ -19,13 +19,6 @@ def home(request):
     posts = Post.objects.all()
     return render(request, 'Appblog/home.html',{'posts':posts})
 
-# about
-def about(request):
-    return render(request, 'Appblog/about.html')
-# contact
-def contact(request):
-    return render(request, 'Appblog/contact.html')
-
 # Dashboard
 def dashboard(request):
     if request.user.is_authenticated:
@@ -65,7 +58,7 @@ def user_signup(request):
             # user.groups.add(group)
     else:#if request is GET or other
         form = SignUpForm()
-    return render(request, 'Appblog/signup.html',{'form':form})
+    return render(request, 'Appblog/home.html',{'form':form, "register_req":True})
 
 def user_login(request):
     print("REQUEST DATA : ",request.POST)
@@ -82,30 +75,9 @@ def user_login(request):
                     return HttpResponseRedirect('/dashboard/')
         else:
             form = LoginForm()
-        return render(request, 'Appblog/login.html',{'form':form})
+        return render(request, 'Appblog/home.html',{'form':form, "login_req":True})
     else:
         return HttpResponseRedirect('/dashboard/')
-
-# add new posts
-def add_post(request):
-    if request.user.is_authenticated:
-        if request.method == "POST":
-            form= PostForm(request.POST)
-            if form.is_valid():
-                title = form.cleaned_data['title']
-                desc = form.cleaned_data['desc']
-                pst=Post(title=title,desc=desc)
-                pst.save()
-                form=PostForm()
-        else:
-            form=PostForm()
-        return render(request, 'Appblog/addpost.html',{'form':form})
-    else:
-        return HttpResponseRedirect('/login/')
-
-def cancel_post(request):
-    form=PostForm()
-    return render(request, 'Appblog/addpost.html',{'form':form})
 
 
 # update posts
@@ -130,16 +102,6 @@ def update_user(request, id):
     else:
         return HttpResponseRedirect('/login/')
 
-
-# delete posts
-def delete_post(request, id):
-    if request.user.is_authenticated:
-        if request.method == "POST":
-            pi = Post.objects.get(pk=id)
-            pi.delete()
-            return HttpResponseRedirect('/dashboard/')
-    else:
-        return HttpResponseRedirect('/login/')
 
 def change_password(request,id):
     print("REQUEST DATA : ",request.POST)
@@ -169,7 +131,9 @@ def change_password(request,id):
         return render(request, 'Appblog/dashboard.html',{"changePassword":True,"form":form})
         
     messages.error(request,'Please login')
-    return HttpResponseRedirect('/login/')
+    form = LoginForm()
+    return render(request, 'Appblog/home.html',{'form':form, "login_req":True})
+    # return HttpResponseRedirect('')
 
 
 def users_list(request,page_no):

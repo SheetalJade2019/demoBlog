@@ -7,12 +7,12 @@
     <div class="text-black col-sm-10 my-5">
         <h3 >Dashboard Page</h3>
         <div>
-        <a href="{% url 'updateuser' user.User_ID %}" class="btn btn-warning btn-sm">Edit Profile</a><br>
         <a href="{% url 'changepassword' user.User_ID %}" class="btn btn-warning btn-sm">Change Password</a><br>
-        <a href="{% url 'userslist' page_no=1 %}" class="btn btn-warning btn-sm">View All Users</a>
+        <a href="{% url 'userslist' page_no=1 %}" class="btn btn-warning btn-sm">View All Users</a><br>
+        <a href="{% url 'updateuser' user.User_ID %}" class="btn btn-warning btn-sm">Edit Profile</a>
+
         </div>
         
-        <!-- <a href="{% url 'addpost' %}" class="btn btn-success my-3">Add Post</a> -->
         
     </div>
 

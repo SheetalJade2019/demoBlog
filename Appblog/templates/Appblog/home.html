@@ -3,18 +3,71 @@
 
 {% block content %}
 
-    <div class="text-black col-sm-10 my-5">
-        <h3 ></h3>
-        <a href="{% url 'login' %}" class="btn btn-primary btn-sm">Login</a>
-        <a href="{% url 'signup' %}" class="btn btn-primary btn-sm">Register</a>
-        {% for post in posts %}
-        <div class="jumbotron jumbotron-fluid">
-            <div class="container">
-              <h1 class="display-4 font-weight-bold">{{post.title}}</h1>
-              <p class="lead">{{post.desc}}</p>
+    <div class="row">
+
+        <div class="col">
+            <div class="centered">
+                <!-- <img src="img_avatar2.png" alt="Avatar woman"> -->
+                <a href="{% url 'login' %}" class="btn btn-primary btn-sm">Login</a>
+
+                {% if login_req %}
+                <div class="text-black col my-5">
+                    <h3 >Login Here</h3>
+                    <form  method="post" novalidate>
+                        {% csrf_token %}
+                        {% for fm in form %}
+                        <div class="form-group">
+                        {{fm.label_tag}} {{fm}} {{fm.errors|striptags}}
+                        </div>
+                        {% endfor %}
+            
+                        <button class="btn btn-primary"type="submit" name="submit">Submit</button>
+                        {% if form.non_field_errors %}
+                        {% for error in form.non_field_errors %}
+                            <p class="alert alert-danger my-3">{{error}}</p>
+                        {% endfor %}
+                        {% endif %}
+                    </form>
+            
+                </div>
+            
+                {% endif %}
             </div>
         </div>
-        {% endfor %}
+        
+        <div class="col">
+            <div class="centered">
+            <!-- <img src="img_avatar.png" alt="Avatar man"> -->
+            <a href="{% url 'signup' %}" class="btn btn-primary btn-sm">Register</a>
+
+            {% if register_req %}
+                <div class="text-black col my-5">
+                    <h3 >Sign Up Page</h3>
+                    {% if messages %}
+                    {% for message in messages %}
+                    <p>{{message}}</p>
+                    {% endfor %}
+                    {% endif %}
+                    <form  method="post" novalidate>
+                        {% csrf_token %}
+                        {% for fm in form %}
+                        <div class="form-group">
+                        {{fm.label_tag}}<br> {{fm}} {{fm.errors|striptags}}
+                        </div>
+                        {% endfor %}
+                        <button class="btn btn-primary"type="submit" name="submit">Submit</button>
+                        {% if form.non_field_errors %}
+                        {% for error in form.non_field_errors %}
+                            <p class="alert alert-danger my-3">{{error}}</p>
+                        {% endfor %}
+                        {% endif %}
+                    </form>
+            
+                </div>
+        
+            {% endif %}
+            </div>
+        </div>
     </div>
 
 {% endblock content %}

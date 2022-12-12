@@ -19,25 +19,18 @@
 </head>
 
 <body>
-     <div class="container-fluid">
+    <div class="container-fluid">
         {% include 'Appblog/navbar.html' %}
     </div>
     <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                {% block msg %}
-
-                {% endblock msg %}
-            </div>
-
-            <div class="row">
-                {% block side %}
-                {% endblock side %}
-
-                {% block content %}
-                {% endblock content %}
-            </div>
-
+        <div>
+            {% if messages %}
+            {% for message in messages %}
+            <p class="text-center">{{message}}</p>
+            {% endfor %}
+            {% endif %}
+            {% block content %}
+            {% endblock content %}
         </div>
     </div>
 
